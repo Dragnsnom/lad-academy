@@ -1,0 +1,33 @@
+{
+  "name": "request-reply-nats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:api": "npm --prefix ./packages/api run build",
+    "build:storage": "npm --prefix ./packages/storage run build",
+    "build": "npm run build:api && npm run build:storage",
+    "dev:api": "npm --prefix ./packages/api run dev",
+    "dev:storage": "npm --prefix ./packages/storage run dev",
+    "dev": "npm run dev:api & npm run dev:storage",
+    "dev:win": "start npm run dev:api & start npm run dev:storage",
+    "start:api": "npm --prefix ./packages/api start",
+    "start:storage": "npm --prefix ./packages/storage start",
+    "start": "npm run start:api & npm run start:storage",
+    "start:win": "start npm run start:api & start npm run start:storage"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nats": "^2.7.1",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "@types/uuid": "^8.3.4",
+    "nodemon": "^2.0.19",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.8.2"
+  }
+}

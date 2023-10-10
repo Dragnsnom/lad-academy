@@ -1,0 +1,53 @@
+version: '3.3'
+
+services:
+  postgres:
+    container_name: ms_postgres
+    image: postgres
+    environment:
+      - "POSTGRES_PASSWORD=admin"
+    ports:
+      - "5432:5432"
+
+  nats:
+    container_name: ms_nats
+    image: nats
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+
+  api:
+    build:
+      context: ./
+      dockerfile: ./packages/api/Dockerfile
+    container_name: ms_api
+    environment:
+      - "NATS_URI=nats://nats:4222"
+      - "PORT=3000"
+      - "HOST=0.0.0.0"
+    links:
+      - nats
+    depends_on:
+      - nats
+    ports:
+      - "3000:3000"
+    command: npm --prefix ./packages/api start
+
+  storage:
+    build:
+      context: ./
+      dockerfile: ./packages/storage/Dockerfile
+    container_name: ms_storage
+    environment:
+      - "NATS_URI=nats://nats:4222"
+      - "DB_PORT=5432"
+      - "DB_HOST=postgres"
+      - "DB_PASSWORD=admin"
+    links:
+      - nats
+      - postgres
+    depends_on:
+      - nats
+      - postgres
+    command: npm --prefix ./packages/storage start
